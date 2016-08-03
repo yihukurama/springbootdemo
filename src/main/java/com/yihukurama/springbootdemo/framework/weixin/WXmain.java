@@ -1,7 +1,5 @@
 package com.yihukurama.springbootdemo.framework.weixin;
 
-import java.security.MessageDigest;
-import java.util.Arrays;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +7,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yihukurama.springbootdemo.framework.weixin.c.TulingResponse;
-import com.yihukurama.springbootdemo.framework.weixin.sourcecode.AesException;
+import com.yihukurama.springbootdemo.framework.weixin.m.Constants;
+import com.yihukurama.springbootdemo.utils.SHA1;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 微信入口
@@ -18,7 +21,7 @@ import com.yihukurama.springbootdemo.framework.weixin.sourcecode.AesException;
  */
 @RestController
 public class WXmain {
-	final String token = "yihukurama";
+	
 	TulingResponse tulingResponse;
 	
 	public WXmain(){
@@ -26,12 +29,12 @@ public class WXmain {
 	}
 	
 	@RequestMapping("/weixin")
-    String weixinhome(
+        String weixinhome(
     		@RequestParam(value="echostr", required=false, defaultValue="null") String echostr,
-    		@RequestParam(value="echostr", required=false, defaultValue="null") String timestamp,
-    		@RequestParam(value="echostr", required=false, defaultValue="null") String nonce,
-    		@RequestParam(value="echostr", required=false, defaultValue="null") String encrypt,
-    		
+    		@RequestParam(value="timestamp", required=false, defaultValue="null") String timestamp,
+    		@RequestParam(value="nonce", required=false, defaultValue="null") String nonce,
+    		@RequestParam(value="encrypt", required=false, defaultValue="null") String encrypt,
+    		@RequestParam(value="signature", required=false, defaultValue="null") String signature,
     		@RequestBody(required=false)String requestBody) {
 		String response = "Hello weixin!";
 		
@@ -39,58 +42,40 @@ public class WXmain {
 			response = tulingResponse.response(requestBody);
 		}else{//基础认证
 			
-			try {
-				response = check(token, timestamp, nonce, encrypt);
-			} catch (AesException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			String checkResult = check(Constants.TOKEN, timestamp, nonce);
+			if(signature.equals(checkResult))
+                            response = echostr;
+			
 		}
 		
-        return response;
-    }
+            return response;
+        }
 
 
-		/**
-		 * 用SHA1算法生成安全签名
-		 * @param token 票据
-		 * @param timestamp 时间戳
-		 * @param nonce 随机字符串
-		 * @param encrypt 密文
-		 * @return 安全签名
-		 * @throws AesException 
-		 */
-		public  String check(String token, String timestamp, String nonce, String encrypt) throws AesException
-		{
-			try {
-				String[] array = new String[] { token, timestamp, nonce, encrypt };
-				StringBuffer sb = new StringBuffer();
-				// 字符串排序
-				Arrays.sort(array);
-				for (int i = 0; i < 4; i++) {
-					sb.append(array[i]);
-				}
-				String str = sb.toString();
-				// SHA1签名生成
-				MessageDigest md = MessageDigest.getInstance("SHA-1");
-				md.update(str.getBytes());
-				byte[] digest = md.digest();
+        /**
+        * 验证微信服务器
+        * @param token
+        * @param timestamp
+        * @param nonce
+        * @return 
+        */
+        public  String check(String token, String timestamp, String nonce)
+        {
+                List<String> params = params = new ArrayList<String>();
+                params.add(token);  
+                params.add(timestamp);  
+                params.add(nonce);  
+                //1. 将token、timestamp、nonce三个参数进行字典序排序  
+                Collections.sort(params, new Comparator<String>() {  
+                @Override  
+                public int compare(String o1, String o2) {  
+                    return o1.compareTo(o2);  
+                }  
+            });   
+                //2. 将三个参数字符串拼接成一个字符串进行sha1加密  
+                String temp = SHA1.encode(params.get(0) + params.get(1) + params.get(2));  
+                return temp;
 
-				StringBuffer hexstr = new StringBuffer();
-				String shaHex = "";
-				for (int i = 0; i < digest.length; i++) {
-					shaHex = Integer.toHexString(digest[i] & 0xFF);
-					if (shaHex.length() < 2) {
-						hexstr.append(0);
-					}
-					hexstr.append(shaHex);
-				}
-				return hexstr.toString();
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new AesException(AesException.ComputeSignatureError);
-			}
-
-	}
+        }
 	
 }
