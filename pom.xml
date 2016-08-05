@@ -31,6 +31,12 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- springboot 单元测试 标准依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!-- apache http组件 依赖 -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -44,12 +50,7 @@
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
 		</dependency>
-		<!-- 单元测试 依赖 -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<optional>true</optional>
-		</dependency>
+		
 		
     </dependencies>
     
