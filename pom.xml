@@ -15,36 +15,42 @@
     
     <!-- Additional lines to be added here... -->
     <dependencies>
+    	<!-- springboot web 标准依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- springboot 模板（html视图） 标准依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <!-- springboot 开发者工具 标准依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
-
+		<!-- apache http组件 依赖 -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.2.1</version>
 		</dependency>
+		<!-- net json 依赖 -->
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
 		</dependency>
+		<!-- 单元测试 依赖 -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
     </dependencies>
     
     <build>
