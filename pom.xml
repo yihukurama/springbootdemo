@@ -6,7 +6,7 @@
     <groupId>com.yihukurama.springbootdemo</groupId>
     <artifactId>myproject</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    
+    <packaging>war</packaging>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -50,8 +50,12 @@
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
 		</dependency>
-		
-		
+		<!-- 内置tomcat设置为provided，不与真正部署的tomcat冲突 -->
+		<dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-tomcat</artifactId>
+        	<scope>provided</scope>
+    </dependency>
     </dependencies>
     
     <build>
