@@ -20,7 +20,7 @@ public class CommonController {
 	private Logger logger = Logger.getLogger(CommonController.class);
 	//刷新微信token
     @RequestMapping("/refreshtoken")
-    public void index(@RequestParam(value="pwd", required=true) String pwd) {
+    public String index(@RequestParam(value="pwd", required=true) String pwd) {
         if(pwd!=null && pwd.equals("dengshuai@123")){
         		//刷新微信token并存入野狗
         		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
@@ -28,8 +28,9 @@ public class CommonController {
         		String response = HttpClientUtil.doGet(url);
         		logger.info("刷新的微信token是："+response);
         		KeyValueDBApi.saveWeixinToken(response);
+        		return "refresh token done!";
         }
-        		
+        	return "param error!";
     }
     
     
