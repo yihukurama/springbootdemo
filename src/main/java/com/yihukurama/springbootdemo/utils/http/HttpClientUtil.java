@@ -13,7 +13,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import net.sf.json.JSONObject;  
 /* 
  * 利用HttpClient进行post请求的工具类 
  */  
@@ -71,7 +70,7 @@ public class HttpClientUtil {
                 /**读取服务器返回过来的json字符串数据**/
                 strResult = EntityUtils.toString(response.getEntity());
                 url = URLDecoder.decode(url, "UTF-8");
-            } else {
+            } else {	
             		System.out.println("get请求提交失败:" + url);
             }
         } catch (IOException e) {

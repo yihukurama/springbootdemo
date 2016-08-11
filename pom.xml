@@ -43,19 +43,28 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.2.1</version>
 		</dependency>
-		<!-- net json 依赖 -->
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-			<classifier>jdk15</classifier>
-		</dependency>
+		
 		<!-- 内置tomcat设置为provided，不与真正部署的tomcat冲突 -->
 		<dependency>
         	<groupId>org.springframework.boot</groupId>
         	<artifactId>spring-boot-starter-tomcat</artifactId>
         	<scope>provided</scope>
     </dependency>
+    
+    <dependency>
+    	<groupId>com.alibaba</groupId>
+    	<artifactId>fastjson</artifactId>
+    	<version>1.2.15</version>
+	</dependency>
+    
+    
+    <!-- SDK的应用 -->
+    <!-- wilddog SDK -->
+    <dependency>
+    <groupId>com.wilddog</groupId>
+    <artifactId>wilddog-client-jvm</artifactId>
+    <version>0.6.4</version>
+</dependency>
     </dependencies>
     
     <build>
